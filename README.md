@@ -8,6 +8,8 @@ Terraform
 By HashiCorp
 
 Set up Terraform CLI in your GitHub Actions workflow.
+
+
                                                          ESTRUTURA DO YML
 3-Vincular chaves access_key e secret_access_key na opções de variáveis de ambiente no github.
 
