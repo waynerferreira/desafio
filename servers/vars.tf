@@ -10,9 +10,9 @@ variable "cdirs_acesso_remoto" {
     default = ["0.0.0.0/0"]
 }
 variable "vpcteste" {
-    default = "vpc-05e4bfbf22ea3c3e6"
+    default = "vpc-0461eb792b9dd6671"
 }
-variable "subnet-testeA"{
+/*variable "subnet-testeA"{
     default = "subnet-02062f4d0eb9504da"
 }
 variable "subnet-testeB"{
