@@ -7,7 +7,7 @@ terraform {
       bucket = "waynerbucktohio"
     ##  dynamodb_table = "terraform-state-lock-dynamo"
     #  key = ""
-      key = "credentials"
+      key = "terraform-teste.tfstate"
       region = "us-east-2"
       #encrypted = true
     }
