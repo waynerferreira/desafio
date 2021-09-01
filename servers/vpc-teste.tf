@@ -34,7 +34,7 @@ resource "aws_network_acl" "acl_teste" {
     tags = {
     name = "acl_teste"
   }
-  depends_on = [aws_subnet.subnet-testeA.id]
+
   ingress {
     protocol   = -1
     rule_no    = 100
