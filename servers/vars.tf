@@ -24,7 +24,9 @@ variable "acl_teste"{
 variable "igw-teste"{
     default = "igw-0c221ec2b68762076"
 }
-
+variable "sg_teste" {
+    default = "sg-0e233af418e463671"
+}
 /*variable "sg_teste" {
     #type = map
 #   description = "sg-0714a8294df4cb3ad"

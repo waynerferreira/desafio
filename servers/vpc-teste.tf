@@ -21,6 +21,7 @@ resource "aws_subnet" "subnet-testeB" {
   vpc_id     = "${var.vpcteste}"
   cidr_block = "10.0.2.0/24"
   availability_zone_id = "use2-az2"
+  map_public_ip_on_launch = true
   
   tags = {
     Name = "subnet-testeB"
@@ -115,4 +116,8 @@ resource "aws_route_table_association" "rt-subnet-testeA" {
   route_table_id = "rtb-0c8140034a77a8a5a"
 
  }
+resource "aws_route_table_association" "rt-subnet-testeB" {
+  subnet_id = "${var.subnet-testeB}"
+  route_table_id = "rtb-0c8140034a77a8a5a"
 
+ }

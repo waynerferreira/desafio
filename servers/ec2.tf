@@ -80,3 +80,14 @@ resource "aws_instance" "k8s" {
     key_name = var.key_name
 }
 */
+resource "aws_instance" "k8sworker" {
+    count = "${var.servers}"
+    ami = "ami-089fe97bc00bff7cc"
+    instance_type = "t2.medium"
+    tags = {
+        Name = "k8sworker${count.index}"
+    }
+    subnet_id = "${var.subnet-testeB}"
+    vpc_security_group_ids = ["${aws_security_group.sg_teste.id}"]
+    key_name = "${var.key_name}"
+}
