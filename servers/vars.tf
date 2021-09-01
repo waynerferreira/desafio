@@ -34,7 +34,7 @@ variable "igw-teste"{
 }
 */
 variable "key_name" {
-    default = "chaveaws-local"
+    default = "awswaynerohio"
 }
 
 variable "servers" {
