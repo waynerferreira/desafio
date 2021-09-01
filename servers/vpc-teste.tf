@@ -102,7 +102,7 @@ resource "aws_route_table" "rt-teste" {
     Name = "rt-teste"
   }
 }
-/*
+
 resource "aws_route" "rotas-teste" {
   route_table_id = "${aws_route_table.rt-teste.id}"
   destination_cidr_block = "0.0.0.0/0"
@@ -111,8 +111,8 @@ resource "aws_route" "rotas-teste" {
   depends_on = [aws_route_table.rt-teste]
 }
 resource "aws_route_table_association" "rt-subnet-testeA" {
-  subnet_id = "subnet-02062f4d0eb9504da"
-  route_table_id = "rtb-02711fa49579500ca"
+  subnet_id = "${var.subnet-testeA}"
+  route_table_id = "rtb-0c8140034a77a8a5a"
 
  }
-*/
+

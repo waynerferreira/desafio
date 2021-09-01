@@ -12,17 +12,17 @@ variable "cdirs_acesso_remoto" {
 variable "vpcteste" {
     default = "vpc-0461eb792b9dd6671"
 }
-/*variable "subnet-testeA"{
-    default = "subnet-02062f4d0eb9504da"
+variable "subnet-testeA"{
+    default = "subnet-050d0529d97294ba8"
 }
 variable "subnet-testeB"{
-    default = "subnet-01c97f393aa55f206"
+    default = "subnet-05a52da2d68ce083b"
 }
 variable "acl_teste"{
-    default = "acl-0b8cc6c418522f858"
+    default = "acl-0141d45a3a090cee5"
 }
 variable "igw-teste"{
-    default = "igw-01b34e3412c0e2779"
+    default = "igw-0c221ec2b68762076"
 }
 
 /*variable "sg_teste" {
