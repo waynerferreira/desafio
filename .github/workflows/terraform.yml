@@ -69,7 +69,7 @@ jobs:
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Install Terraform
       env:
-            TERRAFORM_VERSION: "0.12.15"
+            TERRAFORM_VERSION: "0.15.0"
       run: |
         tf_version=$TERRAFORM_VERSION
         wget https://releases.hashicorp.com/terraform/"$tf_version"/terraform_"$tf_version"_linux_amd64.zip
