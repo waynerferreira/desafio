@@ -9,7 +9,7 @@ resource "aws_vpc" "vpcteste" {
 resource "aws_subnet" "subnet-testeA" {
   vpc_id     = "${var.vpcteste}"
   cidr_block = "10.0.1.0/24"
-  availability_zone_id = "use1-az2"
+  availability_zone_id = "use2-az1"
   map_public_ip_on_launch = true
 
   tags = {
@@ -20,7 +20,7 @@ resource "aws_subnet" "subnet-testeA" {
 resource "aws_subnet" "subnet-testeB" {
   vpc_id     = "${var.vpcteste}"
   cidr_block = "10.0.2.0/24"
-  availability_zone_id = "use1-az4"
+  availability_zone_id = "use2-az2"
   
   tags = {
     Name = "subnet-testeB"
