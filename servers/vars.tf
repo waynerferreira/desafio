@@ -2,7 +2,7 @@ variable "amis" {
     #type = map
     default = {
         "us-east-1" = "ami-08b2293fdd2deba2a"
-        "us-east-2" = "ami-089fe97bc00bff7cc"
+        "us-east-2" = "ami-00399ec92321828f5"
     }
 }
 

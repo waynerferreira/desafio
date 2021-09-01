@@ -1,6 +1,6 @@
 resource "aws_instance" "web" {
    count = "${var.servers}"
-    ami = "ami-089fe97bc00bff7cc"
+    ami = "ami-00399ec92321828f5"
     instance_type = "t2.medium"
 
    /*dynamic "ebs_block_device"{
@@ -82,7 +82,7 @@ resource "aws_instance" "k8s" {
 */
 resource "aws_instance" "k8sworker" {
     count = "${var.servers}"
-    ami = "ami-089fe97bc00bff7cc"
+    ami = "ami-00399ec92321828f5"
     instance_type = "t2.medium"
     tags = {
         Name = "k8sworker${count.index}"
