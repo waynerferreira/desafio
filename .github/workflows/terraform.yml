@@ -81,8 +81,10 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      run: terraform init 
+      run: terraform init -reconfigure
 
+    - name: Terraform Validate
+      run: terraform validate 
     # Checks that all Terraform configuration files adhere to a canonical format
     #- name: Terraform Format
     #  run: terraform fmt -check
