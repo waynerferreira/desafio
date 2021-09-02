@@ -34,6 +34,7 @@ Set up Terraform CLI in your GitHub Actions workflow.
 11-terraform.yml, finalizando com terraform apply -auto-approve onde o mesmo não vai solicitar o aceite via "yes" para rodar o comando especificamente.
 
                                                          ESTRUTURA HCL TERRAFORM
+                                                         TODA ESTRUTURA FEITO EM OHIO POIS EM VIRGINIA ESTA O PROJETO TERRAFORM, ESTE BASEADO NO MESMO
 1-Para este processo realizei o download do projeto via DESKTOP GITHUB e abri os arquvios via VSCODE para manipulação das minhas estruturas TF.
 
 2-Com a estrutura vinculada fica tranquilo de realizar os testes localmente antes de realizar o commit para github.
@@ -42,3 +43,164 @@ Set up Terraform CLI in your GitHub Actions workflow.
 
 4-Construção do ambiente VPC , SUBNETS, ACL, ROUTE TABLE, INTERNET GATEWAY, EC2, com utilização de variaveis e modulos para funcionamento do projeto.
 
+5-Construção das Instancias , realizado os determinados vinculos a minha estrutura de VPC.
+
+6-Construção do load balancer feito via deshboard ( mesmo processo da estrutura do REPOSITÓRIO TERRAFORM. ( Projeto futuro add estrutura do load neste abiente)
+
+                                                       ESTRUTURA KUBERNETES
+Estrutura montada para kubernetes MULTIMASTER vínculo com HAPROXY (PODEMOS UTILIZAR UM DNS DA AWS COMO LOAD TAMBÉM, MAS NESTE CASO O LOAD FOI CRIADO ACIMA DE TODA ESTRUTURA)
+Passo a passo:
+Maquina HAPROXY:
+Simples processo de Mapear estruturas master do K8S
+vim /etc/haproxy/haproxy_config
+acrescentar o script abaixo:
+
+
+frontend kubernetes
+  mode tcp
+  bind 10.0.1.20:6443
+  option tcplog
+  default_backend k8s-masters
+
+backend k8s-masters
+  mode tcp
+  balance roundrobin    
+  option tcp-check
+  server k8s-master-01 10.0.1.95:6443 check fall 3 rise 2    
+  server k8s-master-02 10.0.1.82:6443 check fall 3 rise 2
+  server k8s-master-03 10.0.1.185:6443 check fall 3 rise 2
+  
+  Restar do haproxy: systemctl restart haproxy
+
+Configuração cluster multimaster k8s
+Após provisionar as 7 máquinas na aws em ohio
+logar nas maquinas apt-get update em todas 
+setar os devidos hostnames em cada uma tanto para as 3 workers quanto para as 3 masters (claro alterando a numeração de 1 - 3 )
+ 
+hostname k8s-master-01
+echo "k8s-master-01" > /etc/hostname
+
+hostname k8s-worker-02
+echo "k8s-worker-02" > /etc/hostname
+
+Após este processo iniciamos com a instalação do Docker
+
+curl -fsSL https://get.docker.com | bash
+
+Para garantir que o driver Cgroup do Docker será configurado para o systemd, que é o gerenciador de serviços padrão utilizado pelo Kubernetes execute os comandos abaixo:
+
+Para a família Debian, execute o seguinte comando:
+
+cat > /etc/docker/daemon.json <<EOF
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
+
+sudo mkdir -p /etc/systemd/system/docker.service.d
+
+Agora basta reiniciar o Docker.
+
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+
+Para finalizar, verifique se o driver Cgroup foi corretamente definido.
+
+docker info | grep -i cgroup
+
+Se a saída foi Cgroup Driver: systemd, esta tudo ok! bora bora!
+
+INSTALANDO K8S
+
+sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+
+sudo echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
+
+sudo apt-get update
+
+sudo apt-get install -y kubelet kubeadm kubectl
+
+Todos comando acima devem ser executados em todas as maquinas, o comando abaixo é para ser executado somente em uma maquina master no meu caso k8s-master-01
+
+IMPORTANTE APÓS O COMANDO ABAIXO SALVAR OS TOKENS DE ACESSO DOS MASTERS E DOS WORKERS
+kubeadm init --control-plane-endpoint "elbterraformk8slz-654277202.us-east-1.elb.amazonaws.com:6443" --upload-certs
+
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+
+Configuração WORKERS
+
+hostname das maquinas de 01 a 03
+
+hostname k8s-worker-01
+echo "k8s-worker-01" > /etc/hostname
+
+acrecenta ip e nome do haproxy
+vim /etc/hosts
+
+10.0.1.75 k8s-haproxy 
+
+curl -fsSL https://get.docker.com | bash
+
+Para garantir que o driver Cgroup do Docker será configurado para o systemd, que é o gerenciador de serviços padrão utilizado pelo Kubernetes execute os comandos abaixo:
+
+Para a família Debian, execute o seguinte comando:
+
+cat > /etc/docker/daemon.json <<EOF
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
+
+sudo mkdir -p /etc/systemd/system/docker.service.d
+
+Agora basta reiniciar o Docker.
+
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+
+Para finalizar, verifique se o driver Cgroup foi corretamente definido.
+
+docker info | grep -i cgroup
+
+Se a saída foi Cgroup Driver: systemd, esta tudo ok! bora bora!
+
+INSTALANDO K8S
+
+sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+
+sudo echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
+
+sudo apt-get update
+
+sudo apt-get install -y kubelet kubeadm kubectl
+
+insira o token gerado na maquina k8s-master-01 para juntar ao kluster
+
+kubeadm join k8s-haproxy:6443 --token p35ebh.y5wcr2zhjuwdy28d \
+        --discovery-token-ca-cert-hash sha256:3137191f94ccaa01f.....
+  
+  
+kubectl get nodes
+  verificar se todos os nodes realizaram conexão.
+  Com isso criado os devidos yaml para aplicações rodar, expondo os services NodePort, estrutura simples de NGINX , APACHE2 para nível de exemplo executando, vou acrescentando no derrorrer do temo, grafana , zabbix entre outros o mesmo via de acordo com as demandas e tempo para montagem das estruruas. 
+  
+  
+  lembrando que por ser ambiente de teste não foi utilizado INGRESS HELM para enriquecer todo o projeto, sendo isso uma demanda para projetos futuros.
+  
+  Obrigado pela Atenção! Desculpe os erros de português irei ajustando com o tempo!!!!!
+                                                                        
+                                                                                É NOIS!
