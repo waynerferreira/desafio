@@ -91,3 +91,14 @@ resource "aws_instance" "k8sworker" {
     vpc_security_group_ids = ["${aws_security_group.sg_teste.id}"]
     key_name = "${var.key_name}"
 }
+
+resource "aws_instance" "haproxy" {
+    count = 1
+    ami = "ami-00399ec92321828f5"
+    instance_type = "t2.micro"
+    tags = {
+        Name = "haproxy${count.index}"
+    }
+    subnet_id = "${var.subnet-testeA}"
+    vpc_security_group_ids = ["${aws_security_group.sg_teste.id}"]
+    key_name = "${var.key_name}"
