@@ -102,3 +102,4 @@ resource "aws_instance" "haproxy" {
     subnet_id = "${var.subnet-testeA}"
     vpc_security_group_ids = ["${aws_security_group.sg_teste.id}"]
     key_name = "${var.key_name}"
+}
