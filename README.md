@@ -34,7 +34,7 @@ Set up Terraform CLI in your GitHub Actions workflow.
 * 11-terraform.yml, finalizando com terraform apply -auto-approve onde o mesmo não vai solicitar o aceite via "yes" para rodar o comando especificamente.
 
 ###                                                         ESTRUTURA HCL TERRAFORM<h3>
-###                                                         TODA ESTRUTURA FEITO EM OHIO POIS EM VIRGINIA ESTA O PROJETO TERRAFORM, ESTE BASEADO NO MESMO<h3>
+#####                                                         TODA ESTRUTURA FEITO EM OHIO POIS EM VIRGINIA ESTA O PROJETO TERRAFORM, ESTE BASEADO NO MESMO<h5>
 * 1-Para este processo realizei o download do projeto via DESKTOP GITHUB e abri os arquvios via VSCODE para manipulação das minhas estruturas TF.
 
 * 2-Com a estrutura vinculada fica tranquilo de realizar os testes localmente antes de realizar o commit para github.
@@ -55,7 +55,7 @@ Simples processo de Mapear estruturas master do K8S
 vim /etc/haproxy/haproxy_config
 acrescentar o script abaixo:
 
-
+ˋˋˋ
 frontend kubernetes
   mode tcp
   bind 10.0.1.20:6443
@@ -69,6 +69,7 @@ backend k8s-masters
   server k8s-master-01 10.0.1.95:6443 check fall 3 rise 2    
   server k8s-master-02 10.0.1.82:6443 check fall 3 rise 2
   server k8s-master-03 10.0.1.185:6443 check fall 3 rise 2
+ ˋˋˋ  
   
   Restar do haproxy: systemctl restart haproxy
 
@@ -90,7 +91,8 @@ curl -fsSL https://get.docker.com | bash
 Para garantir que o driver Cgroup do Docker será configurado para o systemd, que é o gerenciador de serviços padrão utilizado pelo Kubernetes execute os comandos abaixo:
 
 Para a família Debian, execute o seguinte comando:
-
+  
+ˋˋˋ
 cat > /etc/docker/daemon.json <<EOF
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
@@ -101,7 +103,8 @@ cat > /etc/docker/daemon.json <<EOF
   "storage-driver": "overlay2"
 }
 EOF
-
+ ˋˋˋ
+  
 sudo mkdir -p /etc/systemd/system/docker.service.d
 
 Agora basta reiniciar o Docker.
@@ -129,19 +132,21 @@ sudo apt-get install -y kubelet kubeadm kubectl
 
 Todos comando acima devem ser executados em todas as maquinas, o comando abaixo é para ser executado somente em uma maquina master no meu caso k8s-master-01
 
-IMPORTANTE APÓS O COMANDO ABAIXO SALVAR OS TOKENS DE ACESSO DOS MASTERS E DOS WORKERS
+######IMPORTANTE APÓS O COMANDO ABAIXO SALVAR OS TOKENS DE ACESSO DOS MASTERS E DOS WORKERS<h6>
+  
 kubeadm init --control-plane-endpoint "elbterraformk8slz-654277202.us-east-1.elb.amazonaws.com:6443" --upload-certs
 
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 
-Configuração WORKERS
+######Configuração WORKERS<h6>
 
 hostname das maquinas de 01 a 03
-
+ˋˋˋ
 hostname k8s-worker-01
 echo "k8s-worker-01" > /etc/hostname
-
-acrecenta ip e nome do haproxy
+ˋˋˋ
+  
+acrecenta ip e nome do haproxy 
 vim /etc/hosts
 
 10.0.1.75 k8s-haproxy 
@@ -152,6 +157,7 @@ Para garantir que o driver Cgroup do Docker será configurado para o systemd, qu
 
 Para a família Debian, execute o seguinte comando:
 
+ ˋˋˋ
 cat > /etc/docker/daemon.json <<EOF
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
@@ -162,7 +168,8 @@ cat > /etc/docker/daemon.json <<EOF
   "storage-driver": "overlay2"
 }
 EOF
-
+ˋˋˋ
+  
 sudo mkdir -p /etc/systemd/system/docker.service.d
 
 Agora basta reiniciar o Docker.
@@ -176,7 +183,7 @@ docker info | grep -i cgroup
 
 Se a saída foi Cgroup Driver: systemd, esta tudo ok! bora bora!
 
-INSTALANDO K8S
+######INSTALANDO K8S<h6>
 
 sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2
 
@@ -189,10 +196,10 @@ sudo apt-get update
 sudo apt-get install -y kubelet kubeadm kubectl
 
 insira o token gerado na maquina k8s-master-01 para juntar ao kluster
-
+ˋˋˋ
 kubeadm join k8s-haproxy:6443 --token p35ebh.y5wcr2zhjuwdy28d \
         --discovery-token-ca-cert-hash sha256:3137191f94ccaa01f.....
-  
+ ˋˋˋ 
   
 kubectl get nodes
   verificar se todos os nodes realizaram conexão.
