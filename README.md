@@ -21,9 +21,9 @@ O desafio consiste em construir uma stack de infraestrutura que provisione um am
 
 * Inicie os steps, verifique o processo de instalação do terraform com a versão desejada e adicione comando para direcionar o binário do mesmo para execução correta e devidas permissões.
 
-* Configuração ainda do step para init do terraform ( este deve analisar o processo de onde o backend irá executar, podendo assim ser necessário iniciar com terrraform init -reconfigure).
+* Configuração ainda do step para init do terraform ( este deve analisar o processo de onde o backend irá executar, podendo assim, ser necessário iniciar com terrraform init -reconfigure).
 
-* Continuando crie a etapa de validação de sua estrutura do HCL do terraform, com o comando terraform validate, onde verifica as questões de sintaxe de sua estrutura.
+* Continuando, crie a etapa de validação de sua estrutura do HCL do terraform com o comando terraform validate, onde verifica as questões de sintaxe de sua estrutura.
 
 * Step do comando terraform plan, após ok da validação.
 
@@ -32,9 +32,9 @@ O desafio consiste em construir uma stack de infraestrutura que provisione um am
 ### Estrutura hcl terraform<h1>
  >Toda estrutura foi feita em Ohio, pois em Virginia está o projeto terraform, este baseado no mesmo.
   
-* Para este processo realizei o download do projeto via DESKTOP GITHUB e abri os arquivos via VSCODE para manipulação dos arquivos .tf (terrafile).
+* Para este processo, realizei o download do projeto via DESKTOP GITHUB e abri os arquivos via VSCODE para manipulação dos arquivos .tf (terrafile).
 
-* Com a estrutura vinculada fica tranquilo de realizar os testes localmente antes de realizar o commit para github.
+* Com a estrutura vinculada, fica tranquilo de realizar os testes localmente antes de realizar o commit para github.
 
 * Configuração da main com providers baseado na documentação da hashicorp, contendo source = "hashicorp/aws" version="~3.0", onde será meu backend no caso S3 da aws nome do bucket, região da minha infraestrutura cloud e por fim, vínculo com minha chave que foi configurada via aws configure.
 
@@ -70,7 +70,7 @@ resource "aws_lb" "test" {
   }
 }
 ```
-E realizar os devidos vínculos ao Target Group, que neste caso seria seguindo o modelo abaixo:
+E realizar os devidos vínculos ao Target Group, que neste caso, seria seguindo o modelo abaixo:
 
 ```
 resource "aws_lb_target_group" "test" {
@@ -152,7 +152,7 @@ vim /etc/hosts
 ```
 curl -fsSL https://get.docker.com | bash
 ```
-Para garantir que o driver Cgroup do Docker será configurado para o systemd, que é o gerenciador de serviços padrão utilizado pelo Kubernetes execute os comandos abaixo:
+Para garantir que o driver Cgroup do Docker será configurado para o systemd, que é o gerenciador de serviços padrão utilizado pelo Kubernetes, execute os comandos abaixo:
 
 * Para a família Debian, execute o seguinte comando:
   
@@ -200,7 +200,7 @@ sudo apt-get update
 sudo apt-get install -y kubelet kubeadm kubectl
 ```
 
-> O comando abaixo é para ser executado somente em uma máquina master, no meu caso _k8s-master-01_.
+> O comando abaixo deve ser executado somente em uma máquina master, no meu caso _k8s-master-01_.
 
 > Importante, após o comando abaixo, salvar os tokens de acesso dos masters e dos workers, para facilitar o andamento.
 ```  
@@ -212,7 +212,7 @@ Colete o comando de inserção dos _Masters_, deve ser similar ao exemplo abaixo
         --discovery-token-ca-cert-hash sha256:313a5119c15bc35588fe2b3ad4802b51801 \
         --control-plane --certificate-key 0e14303e78813bb4c4460e419438eed2493a34b38c90a9
 ```
-E execute o comando do exemplo acima nas outras duas máquinas _Masters_.
+Execute o comando do exemplo acima nas outras duas máquinas _Masters_.
 
 Dando continuidade ainda no _k8s-master-01_, execute:
 
@@ -221,7 +221,7 @@ Dando continuidade ainda no _k8s-master-01_, execute:
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 ```
 
-## Configuração WORKERS <h1>
+## Configuração Workers <h1>
 
 Setar hostname das maquinas de 01 a 03:
 
@@ -309,9 +309,11 @@ Verifique se todos os nodes realizaram conexão executando:
 ```
 kubectl get nodes
 ```
-Com isso criado, deve realizar os ajustes a nível das aplicações, construção dos aquivos yaml, expondo os services NodePort, estrutura simples de NGINX , APACHE2 para nível de exemplo executando, vou acrescentando no decorrer do tempo, grafana, zabbix, entre outros, de acordo com as demandas e tempo para montagem das estruturas. 
+Com isso criado, deve realizar os ajustes a nível das aplicações, construção dos aquivos yaml, expondo os services NodePort e demais ajustes de acordo com suas aplicações.
 
-> Lembrando que, por ser ambiente de teste, não foi utilizado Ingress, Helm, sendo isso uma demanda para projetos futuros.
+Neste projeto, foi utilizado estruturas simples de NGINX e APACHE2 para nível de exemplo. Irei  acrescentando no decorrer do tempo, grafana, zabbix, entre outros, de acordo com as demandas e tempo para montagem das estruturas. 
+
+> Lembrando que, por ser um ambiente de teste, não foi utilizado Ingress, Helm, dentre outras funcionalidades que podemos adicionar, sendo isso, uma demanda para projetos futuros.
 
 Obrigado pela atenção!
                                                                         
