@@ -1,8 +1,8 @@
-# DESAFIO <h1>
+# :DESAFIO: <h1>
 O desafio consiste em construir uma stack de infraestrutura que provisione um ambiente para rodar uma aplicação backend rest hipotética, com duas réplicas respondendo em
 um Load Balancer, e uma aplicação frontend estática, ambas respondendo pelo mesmo DNS, porém com contextos (paths)distintos.
 
-###                                                        PASSO A PASSO DO PROJETO<h3>
+###                                                        :PASSO A PASSO DO PROJETO:<h3>
 
 * 1-Criação de novo repositório no Github
 
@@ -14,7 +14,7 @@ By HashiCorp
 Set up Terraform CLI in your GitHub Actions workflow.
 
 
-##                                                         ESTRUTURA DO YML<h3>
+##                                                         :ESTRUTURA DO YML:<h3>
 * 3-Vincular chaves access_key e secret_access_key na opções de variáveis de ambiente no github.
 
 * 4-Edição do terraform.yml de acordo com suas configurações onde serão realizados os steps , jobs, da sua actions.
