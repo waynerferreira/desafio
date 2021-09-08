@@ -1,8 +1,8 @@
-# :DESAFIO: <h1>
+# DESAFIO <h1>
 O desafio consiste em construir uma stack de infraestrutura que provisione um ambiente para rodar uma aplicação backend rest hipotética, com duas réplicas respondendo em
 um Load Balancer, e uma aplicação frontend estática, ambas respondendo pelo mesmo DNS, porém com contextos (paths)distintos.
 
-###                                                        :PASSO A PASSO DO PROJETO:<h3>
+###PASSO A PASSO DO PROJETO<h3>
 
 * 1-Criação de novo repositório no Github
 
@@ -14,7 +14,7 @@ By HashiCorp
 Set up Terraform CLI in your GitHub Actions workflow.
 
 
-##                                                         :ESTRUTURA DO YML:<h3>
+###ESTRUTURA DO YML<h3>
 * 3-Vincular chaves access_key e secret_access_key na opções de variáveis de ambiente no github.
 
 * 4-Edição do terraform.yml de acordo com suas configurações onde serão realizados os steps , jobs, da sua actions.
@@ -33,8 +33,9 @@ Set up Terraform CLI in your GitHub Actions workflow.
 
 * 11-terraform.yml, finalizando com terraform apply -auto-approve onde o mesmo não vai solicitar o aceite via "yes" para rodar o comando especificamente.
 
-###                                                         ESTRUTURA HCL TERRAFORM<h3>
-#####                                                         TODA ESTRUTURA FEITO EM OHIO POIS EM VIRGINIA ESTA O PROJETO TERRAFORM, ESTE BASEADO NO MESMO<h5>
+###ESTRUTURA HCL TERRAFORM<h3>
+######TODA ESTRUTURA FOI FEITA EM OHIO, POIS EM VIRGINIA ESTA O PROJETO TERRAFORM, ESTE BASEADO NO MESMO<h6>
+  
 * 1-Para este processo realizei o download do projeto via DESKTOP GITHUB e abri os arquvios via VSCODE para manipulação das minhas estruturas TF.
 
 * 2-Com a estrutura vinculada fica tranquilo de realizar os testes localmente antes de realizar o commit para github.
@@ -47,15 +48,18 @@ Set up Terraform CLI in your GitHub Actions workflow.
 
 * 6-Construção do load balancer feito via deshboard ( mesmo processo da estrutura do REPOSITÓRIO TERRAFORM. ( Projeto futuro add estrutura do load neste abiente)
 
-###                                                       ESTRUTURA KUBERNETES<h3>
+###ESTRUTURA KUBERNETES<h3>
+  
 Estrutura montada para kubernetes MULTIMASTER vínculo com HAPROXY (PODEMOS UTILIZAR UM DNS DA AWS COMO LOAD TAMBÉM, MAS NESTE CASO O LOAD FOI CRIADO ACIMA DE TODA ESTRUTURA)
 Passo a passo:
-Maquina HAPROXY:
+  
+* -Maquina HAPROXY:
 Simples processo de Mapear estruturas master do K8S
 vim /etc/haproxy/haproxy_config
 acrescentar o script abaixo:
 
 ˋˋˋ
+  
 frontend kubernetes
   mode tcp
   bind 10.0.1.20:6443
@@ -69,14 +73,15 @@ backend k8s-masters
   server k8s-master-01 10.0.1.95:6443 check fall 3 rise 2    
   server k8s-master-02 10.0.1.82:6443 check fall 3 rise 2
   server k8s-master-03 10.0.1.185:6443 check fall 3 rise 2
+  
  ˋˋˋ  
   
-  Restar do haproxy: systemctl restart haproxy
+* -  Restart do haproxy: systemctl restart haproxy
 
-Configuração cluster multimaster k8s
-Após provisionar as 7 máquinas na aws em ohio
-logar nas maquinas apt-get update em todas 
-setar os devidos hostnames em cada uma tanto para as 3 workers quanto para as 3 masters (claro alterando a numeração de 1 - 3 )
+* -Configuração cluster multimaster k8s
+* -Após provisionar as 7 máquinas na aws em ohio
+* -Logar nas maquinas apt-get update em todas 
+* -Setar os devidos hostnames em cada uma tanto para as 3 workers quanto para as 3 masters (claro alterando a numeração de 1 - 3 )
  
 hostname k8s-master-01
 echo "k8s-master-01" > /etc/hostname
@@ -84,13 +89,13 @@ echo "k8s-master-01" > /etc/hostname
 hostname k8s-worker-02
 echo "k8s-worker-02" > /etc/hostname
 
-Após este processo iniciamos com a instalação do Docker
+* - Após este processo iniciamos com a instalação do Docker
 
 curl -fsSL https://get.docker.com | bash
 
-Para garantir que o driver Cgroup do Docker será configurado para o systemd, que é o gerenciador de serviços padrão utilizado pelo Kubernetes execute os comandos abaixo:
+* - Para garantir que o driver Cgroup do Docker será configurado para o systemd, que é o gerenciador de serviços padrão utilizado pelo Kubernetes execute os comandos abaixo:
 
-Para a família Debian, execute o seguinte comando:
+* - Para a família Debian, execute o seguinte comando:
   
 ˋˋˋ
 cat > /etc/docker/daemon.json <<EOF
@@ -107,18 +112,18 @@ EOF
   
 sudo mkdir -p /etc/systemd/system/docker.service.d
 
-Agora basta reiniciar o Docker.
+* - Agora basta reiniciar o Docker.
 
 sudo systemctl daemon-reload
 sudo systemctl restart docker
 
-Para finalizar, verifique se o driver Cgroup foi corretamente definido.
+* - Para finalizar, verifique se o driver Cgroup foi corretamente definido.
 
 docker info | grep -i cgroup
 
-Se a saída foi Cgroup Driver: systemd, esta tudo ok! bora bora!
+* - Se a saída foi Cgroup Driver: systemd, esta tudo ok! bora bora!
 
-INSTALANDO K8S
+######INSTALANDO K8S<h6>
 
 sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2
 
@@ -130,7 +135,7 @@ sudo apt-get update
 
 sudo apt-get install -y kubelet kubeadm kubectl
 
-Todos comando acima devem ser executados em todas as maquinas, o comando abaixo é para ser executado somente em uma maquina master no meu caso k8s-master-01
+* - Todos comando acima devem ser executados em todas as maquinas, o comando abaixo é para ser executado somente em uma maquina master no meu caso k8s-master-01
 
 ######IMPORTANTE APÓS O COMANDO ABAIXO SALVAR OS TOKENS DE ACESSO DOS MASTERS E DOS WORKERS<h6>
   
@@ -140,24 +145,25 @@ kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl versio
 
 ######Configuração WORKERS<h6>
 
-hostname das maquinas de 01 a 03
+* - Hostname das maquinas de 01 a 03
 ˋˋˋ
 hostname k8s-worker-01
 echo "k8s-worker-01" > /etc/hostname
 ˋˋˋ
   
-acrecenta ip e nome do haproxy 
+* - Acrecente ip e nome do haproxy 
 vim /etc/hosts
 
 10.0.1.75 k8s-haproxy 
 
 curl -fsSL https://get.docker.com | bash
 
-Para garantir que o driver Cgroup do Docker será configurado para o systemd, que é o gerenciador de serviços padrão utilizado pelo Kubernetes execute os comandos abaixo:
+* - Para garantir que o driver Cgroup do Docker será configurado para o systemd, que é o gerenciador de serviços padrão utilizado pelo Kubernetes execute os comandos abaixo:
 
-Para a família Debian, execute o seguinte comando:
+* - Para a família Debian, execute o seguinte comando:
 
  ˋˋˋ
+  
 cat > /etc/docker/daemon.json <<EOF
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
@@ -168,20 +174,21 @@ cat > /etc/docker/daemon.json <<EOF
   "storage-driver": "overlay2"
 }
 EOF
+  
 ˋˋˋ
   
 sudo mkdir -p /etc/systemd/system/docker.service.d
 
-Agora basta reiniciar o Docker.
+* - Agora basta reiniciar o Docker.
 
 sudo systemctl daemon-reload
 sudo systemctl restart docker
 
-Para finalizar, verifique se o driver Cgroup foi corretamente definido.
+* - Para finalizar, verifique se o driver Cgroup foi corretamente definido.
 
 docker info | grep -i cgroup
 
-Se a saída foi Cgroup Driver: systemd, esta tudo ok! bora bora!
+* - Se a saída foi Cgroup Driver: systemd, esta tudo ok! bora bora!
 
 ######INSTALANDO K8S<h6>
 
@@ -196,9 +203,11 @@ sudo apt-get update
 sudo apt-get install -y kubelet kubeadm kubectl
 
 insira o token gerado na maquina k8s-master-01 para juntar ao kluster
-ˋˋˋ
+ ˋˋˋ
+  
 kubeadm join k8s-haproxy:6443 --token p35ebh.y5wcr2zhjuwdy28d \
         --discovery-token-ca-cert-hash sha256:3137191f94ccaa01f.....
+  
  ˋˋˋ 
   
 kubectl get nodes
