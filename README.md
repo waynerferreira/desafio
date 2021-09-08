@@ -311,9 +311,9 @@ kubectl get nodes
 ```
 Com isso criado, deve realizar os ajustes a nível das aplicações, construção dos aquivos yaml, expondo os services NodePort e demais ajustes de acordo com suas aplicações.
 
-Neste projeto, foi utilizado estruturas simples de NGINX e APACHE2 para nível de exemplo. Irei  acrescentando no decorrer do tempo, grafana, zabbix, entre outros, de acordo com as demandas e tempo para montagem das estruturas. 
+Neste projeto, foi utilizado estruturas simples de NGINX e APACHE2 para nível de exemplo. Irei  acrescentando no decorrer do projeto, de acordo com as demandas e tempo para montagem das estruturas: grafana, zabbix, entre outros.
 
-> Lembrando que, por ser um ambiente de teste, não foi utilizado Ingress, Helm, dentre outras funcionalidades que podemos adicionar, sendo isso, uma demanda para projetos futuros.
+> Lembrando que, por ser um ambiente de teste, não foi utilizado Ingress, Helm, dentre outras funcionalidades que podemos adicionar. Sendo isso, uma demanda para projetos futuros.
 
 Obrigado pela atenção!
                                                                         
