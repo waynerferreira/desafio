@@ -1,8 +1,8 @@
-# desafio
+# desafio <h1>
 O desafio consiste em construir uma stack de infraestrutura que provisione um ambiente para rodar uma aplicação backend rest hipotética, com duas réplicas respondendo em
 um Load Balancer, e uma aplicação frontend estática, ambas respondendo pelo mesmo DNS, porém com contextos (paths)distintos.
 
-                                                        PASSO A PASSO DO PROJETO
+##                                                        PASSO A PASSO DO PROJETO<h2>
 
 1-Criação de novo repositório no Github
 
