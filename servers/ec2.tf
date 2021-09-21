@@ -93,7 +93,7 @@ resource "aws_instance" "k8sworker" {
 }
 
 resource "aws_instance" "haproxy" {
-    count = 1
+    count = 0
     ami = "ami-00399ec92321828f5"
     instance_type = "t2.micro"
     tags = {
